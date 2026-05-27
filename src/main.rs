@@ -8,7 +8,7 @@ mod stats;
 
 fn main() -> Result<(), io::Error> {
     loop {
-        inout::hello_message();
+        inout::write_hello_message();
         let choice = inout::get_user_input()?;
 
         match choice.as_str() {
