@@ -1,6 +1,6 @@
 use std::io;
 
-pub fn hello_message() {
+pub fn write_hello_message() {
     println!("===Random Number Game===\n");
     println!("Choose:");
     println!("1. Start game");
@@ -13,4 +13,12 @@ pub fn get_user_input() -> Result<String, io::Error> {
 
     io::stdin().read_line(&mut user_choice)?;
     Ok(user_choice.trim().to_string())
+}
+
+pub fn ask_difficulty() {
+    println!("Choose difficulty");
+    println!("1. Easy");
+    println!("2. Medium");
+    println!("3. Hard");
+    println!("0. Info")
 }
