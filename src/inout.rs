@@ -30,3 +30,12 @@ pub fn ask_difficulty() {
 pub fn difficulty_expl() {
     println!("TODO!")
 }
+
+// TODO: Write rules
+pub fn write_gamerules() {
+    println!("!TODO")
+}
+
+pub fn ask_user_to_start_game() {
+    println!("")
+}
