@@ -1,6 +1,8 @@
 mod difficulty;
 mod inout;
+mod logic;
 mod messages;
+mod random;
 use messages::*;
 
 #[derive(Debug, PartialEq)]
