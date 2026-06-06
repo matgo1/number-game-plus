@@ -35,6 +35,7 @@ fn main() -> Result<(), std::io::Error> {
         match parse_menu_choice(&user_mode_choice) {
             Some(MenuChoice::Play) => {
                 inout::prompt("Play selected")?;
+                logic::start_game()?;
             }
             Some(MenuChoice::Stats) => {
                 inout::prompt("Stats selected")?;

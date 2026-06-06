@@ -1,6 +1,6 @@
 use rand::RngExt;
 
-pub fn generate_rundom_number(start: u32, end: u32) -> u32 {
+pub fn generate_random_number(input_range: &std::ops::RangeInclusive<u16>) -> u16 {
     let mut rng = rand::rng();
-    rng.random_range(start..=end)
+    rng.random_range(*input_range.start()..=*input_range.end())
 }
