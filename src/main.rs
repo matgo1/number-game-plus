@@ -1,3 +1,4 @@
+mod difficulty;
 mod inout;
 mod messages;
 use messages::*;
