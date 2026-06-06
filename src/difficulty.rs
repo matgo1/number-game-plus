@@ -1,25 +1,5 @@
-<<<<<<< Updated upstream
-use std::io;
-
 use crate::inout;
-
-pub enum Difficulties {
-    Easy,
-    Medium,
-    Hard,
-}
-
-// Implementation of Difficulties
-impl Difficulties {
-    pub fn get_range(&self) -> std::ops::RangeInclusive<u32> {
-        // Get range depends on chosen difficulty
-        // Returns Range
-        match self {
-            Difficulties::Easy => 1..=50,
-            Difficulties::Medium => 1..=100,
-            Difficulties::Hard => 1..=500,
-=======
-use crate::inout;
+use crate::inout::prompt;
 use crate::messages::*;
 
 #[derive(Debug, PartialEq)]
@@ -42,24 +22,18 @@ impl Difficulty {
                 answers_range: 1..=50,
                 tries_count: 7,
             },
-
             Difficulty::Medium => Config {
                 answers_range: 1..=100,
                 tries_count: 5,
             },
-
             Difficulty::Hard => Config {
                 answers_range: 1..=500,
                 tries_count: 3,
             },
->>>>>>> Stashed changes
         }
     }
 }
 
-<<<<<<< Updated upstream
-pub fn select_difficulty() -> Result<std::ops::RangeInclusive<u32>, io::Error> {
-=======
 fn parse_difficulty(input: &str) -> Option<Difficulty> {
     match input.trim() {
         "1" => Some(Difficulty::Easy),
@@ -71,14 +45,10 @@ fn parse_difficulty(input: &str) -> Option<Difficulty> {
 
 pub fn select_difficulty() -> Result<Config, std::io::Error> {
     // Loop asking for correct choice of dif
->>>>>>> Stashed changes
     loop {
-        // Loop in case of errors
-        inout::ask_difficulty();
+        inout::prompt(ASK_DIFFICULTY)?;
+        let user_choice = inout::read_line()?;
 
-<<<<<<< Updated upstream
-        let choice = inout::get_user_input()?;
-=======
         match user_choice.as_str() {
             "?" => explain_diffs(),
 
@@ -92,13 +62,15 @@ pub fn select_difficulty() -> Result<Config, std::io::Error> {
         }
     }
 }
->>>>>>> Stashed changes
 
-        match choice.to_lowercase().as_str() {
-            "1" | "easy" => return Ok(Difficulties::Easy.get_range()),
-            "2" | "medium" => return Ok(Difficulties::Medium.get_range()),
-            "3" | "hard" => return Ok(Difficulties::Hard.get_range()),
-            _ => inout::difficulty_expl(),
+fn explain_diffs() {
+    loop {
+        inout::prompt(EXPLAIN_DIFFICULTIES).unwrap();
+        let user_choice = inout::read_line().unwrap();
+
+        match user_choice.as_str() {
+            "q" => break,
+            _ => continue,
         }
     }
 }

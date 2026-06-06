@@ -1,39 +1,44 @@
-use std::io;
-
 mod difficulty;
-mod game;
 mod inout;
-mod random;
-mod stats;
+mod messages;
+use messages::*;
 
-fn main() -> Result<(), io::Error> {
-    // Loop of etntry interface
+use crate::inout::prompt;
+
+fn main() -> Result<(), std::io::Error> {
+    inout::prompt(WELCOME)?; // Welcome messages
+
+    // Loop for checking user input
     loop {
-        inout::write_hello_message(); // Starting message with mode choice
+        inout::prompt(MAIN_MENU)?;
 
-        let choice = inout::get_user_input()?; // Read user input
+        // Read user input
+        let user_mode_choice = inout::read_line()?;
 
-        // Different functionality depending on user choice
-        match choice.as_str() {
-            "1" => {
-                println!("Starting game...") // Here will be started main game loop
-            }
-            "2" => {
-                println!("Writing stats...") // Reading and writing stats from json
-            }
-            "3" => {
-                break; // Quiting the app
-            }
-
-            "67" => {
-                println!("Fuck") // Voice of mankind
-            }
-
-            _ => {
-                println!("Wrong input") // For fools
+        // Analyze user input
+        match user_mode_choice.trim().parse::<u8>() {
+            Ok(choice) => match choice {
+                1 => {
+                    inout::prompt("option 1 is chosen")?;
+                    break;
+                }
+                2 => {
+                    inout::prompt("option 2 is chosen")?;
+                    break;
+                }
+                3 => {
+                    inout::prompt("option 3 is chosen")?;
+                    break;
+                }
+                _ => {
+                    prompt("Please, choice a valid number")?;
+                }
+            },
+            Err(_) => {
+                inout::prompt("Please, eneter a number")?;
             }
         }
     }
 
-    Ok(()) // Return that everithing OK if everithing is OK
+    Ok(())
 }
