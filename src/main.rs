@@ -3,7 +3,7 @@ mod inout;
 mod messages;
 use messages::*;
 
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub enum MenuChoice {
     Play,
     Stats,
@@ -33,19 +33,29 @@ fn main() -> Result<(), std::io::Error> {
         match parse_menu_choice(&user_mode_choice) {
             Some(MenuChoice::Play) => {
                 inout::prompt("Play selected")?;
-                break;
             }
             Some(MenuChoice::Stats) => {
                 inout::prompt("Stats selected")?;
-                break;
             }
             Some(MenuChoice::Quit) => {
                 inout::prompt("Quit selected")?;
                 break;
             }
-            _ => inout::prompt("Please enter a valid option (1 - 3)")?,
+            None => inout::prompt("Please enter a valid option (1 - 3)")?,
         }
     }
 
     Ok(())
+}
+
+#[cfg(test)]
+mod test {
+    use super::*;
+
+    #[test]
+    fn test_parsing() {
+        assert_eq!(parse_menu_choice("1"), Some(MenuChoice::Play));
+        assert_eq!(parse_menu_choice("2"), Some(MenuChoice::Stats));
+        assert_eq!(parse_menu_choice("3"), Some(MenuChoice::Quit));
+    }
 }
