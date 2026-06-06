@@ -3,7 +3,21 @@ mod inout;
 mod messages;
 use messages::*;
 
-use crate::inout::prompt;
+#[derive(Debug)]
+pub enum MenuChoice {
+    Play,
+    Stats,
+    Quit,
+}
+
+fn parse_menu_choice(input: &str) -> Option<MenuChoice> {
+    match input.trim() {
+        "1" => Some(MenuChoice::Play),
+        "2" => Some(MenuChoice::Stats),
+        "3" => Some(MenuChoice::Quit),
+        _ => None,
+    }
+}
 
 fn main() -> Result<(), std::io::Error> {
     inout::prompt(WELCOME)?; // Welcome messages
@@ -16,27 +30,20 @@ fn main() -> Result<(), std::io::Error> {
         let user_mode_choice = inout::read_line()?;
 
         // Analyze user input
-        match user_mode_choice.trim().parse::<u8>() {
-            Ok(choice) => match choice {
-                1 => {
-                    inout::prompt("option 1 is chosen")?;
-                    break;
-                }
-                2 => {
-                    inout::prompt("option 2 is chosen")?;
-                    break;
-                }
-                3 => {
-                    inout::prompt("option 3 is chosen")?;
-                    break;
-                }
-                _ => {
-                    prompt("Please, choice a valid number")?;
-                }
-            },
-            Err(_) => {
-                inout::prompt("Please, eneter a number")?;
+        match parse_menu_choice(&user_mode_choice) {
+            Some(MenuChoice::Play) => {
+                inout::prompt("Play selected")?;
+                break;
             }
+            Some(MenuChoice::Stats) => {
+                inout::prompt("Stats selected")?;
+                break;
+            }
+            Some(MenuChoice::Quit) => {
+                inout::prompt("Quit selected")?;
+                break;
+            }
+            _ => inout::prompt("Please enter a valid option (1 - 3)")?,
         }
     }
 
