@@ -1,39 +1,16 @@
-use std::io;
-
 mod difficulty;
 mod game;
 mod inout;
+mod messages;
 mod random;
 mod stats;
+use messages::*;
 
-fn main() -> Result<(), io::Error> {
-    // Loop of etntry interface
-    loop {
-        inout::write_hello_message(); // Starting message with mode choice
+fn main() -> Result<(), std::io::Error> {
+    inout::prompt(WELCOME); // Welcome messages
+    inout::prompt(MAIN_MENU); // Display main menu
 
-        let choice = inout::get_user_input()?; // Read user input
+    let user_input = inout::read_line()?;
 
-        // Different functionality depending on user choice
-        match choice.as_str() {
-            "1" => {
-                println!("Starting game...") // Here will be started main game loop
-            }
-            "2" => {
-                println!("Writing stats...") // Reading and writing stats from json
-            }
-            "3" => {
-                break; // Quiting the app
-            }
-
-            "67" => {
-                println!("Fuck") // Voice of mankind
-            }
-
-            _ => {
-                println!("Wrong input") // For fools
-            }
-        }
-    }
-
-    Ok(()) // Return that everithing OK if everithing is OK
+    Ok(())
 }
