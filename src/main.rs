@@ -35,6 +35,7 @@ fn main() -> Result<(), std::io::Error> {
         match parse_menu_choice(&user_mode_choice) {
             Some(MenuChoice::Play) => {
                 inout::prompt("Play selected")?;
+                clearscreen::clear().expect("Failed to clear the screen");
                 logic::start_game()?;
             }
             Some(MenuChoice::Stats) => {
