@@ -1,5 +1,4 @@
 use crate::inout;
-use crate::inout::prompt;
 use crate::messages::*;
 
 #[derive(Debug, PartialEq)]
