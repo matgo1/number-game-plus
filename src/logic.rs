@@ -1,24 +1,26 @@
-use crate::inout::prompt;
 use crate::random::generate_random_number;
 use crate::{difficulty, inout};
 use clearscreen::clear as clean;
 use std::cmp::Ordering;
 
 pub fn start_game() -> Result<bool, std::io::Error> {
-    let config = difficulty::select_difficulty()?;
+    let config = difficulty::select_difficulty()?; // Get serrings depending on difficulty
     clean().expect("Failed to clear the screen");
 
-    let min_num: u16 = *config.answers_range.start();
+    // Get max num for prinitng it to user
     let max_num: u16 = *config.answers_range.end();
+
+    // Generate random secret number
     let secret_number = generate_random_number(&config.answers_range);
 
     let max_tries = config.tries_count;
     let mut tries: u8 = 0;
 
     loop {
-        let cnt_tries = max_tries - tries;
+        let cnt_tries = max_tries - tries; // How many tries last
+        //
         inout::prompt(format!("You have {cnt_tries} tries\n").as_str())?;
-        inout::prompt(format!("Guess between {min_num} and {max_num}\n").as_str())?;
+        inout::prompt(format!("Guess between 1 and {max_num}\n").as_str())?;
         inout::prompt("Your guess >>> ")?;
         let user_number = inout::read_line()?;
 
@@ -45,7 +47,7 @@ pub fn start_game() -> Result<bool, std::io::Error> {
         tries += 1;
 
         if tries == max_tries {
-            prompt("You lost!")?;
+            inout::prompt("You lost!")?;
             return Ok(false);
         }
     }

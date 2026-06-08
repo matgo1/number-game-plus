@@ -26,7 +26,7 @@ fn main() -> Result<(), std::io::Error> {
     clearscreen::clear().expect("Failed to clear screen");
     inout::prompt(WELCOME)?; // Welcome messages
 
-    let mut current_stats = stats::load_stats();
+    let mut current_stats = stats::load_stats(); // Get stats from the file (or zeroes)
 
     // Loop for checking user input
     loop {
@@ -39,7 +39,9 @@ fn main() -> Result<(), std::io::Error> {
         match parse_menu_choice(&user_mode_choice) {
             Some(MenuChoice::Play) => {
                 clearscreen::clear().expect("Failed to clear the screen");
-                current_stats.played_games += 1;
+                current_stats.played_games += 1; // One more plyed game
+
+                // + Win if win or + Loss with lost
                 if logic::start_game()? {
                     current_stats.wins += 1;
                 } else {
@@ -48,6 +50,7 @@ fn main() -> Result<(), std::io::Error> {
                 stats::save_stats(&current_stats);
             }
             Some(MenuChoice::Stats) => {
+                // print stats
                 inout::prompt(format!("Current stats: {:?}", current_stats).as_str())?;
             }
             Some(MenuChoice::Quit) => {
