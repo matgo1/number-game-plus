@@ -22,3 +22,17 @@ cd number-game-plus
 cargo build --release
 ./target/release/number-game-plus
 ```
+
+## Tech Stack
+
+- rust
+- serde
+- serde_json
+- clearscreen
+- rand
+
+## Future Ideas
+
+- PvE
+- local PvP
+- TUI
