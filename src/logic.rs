@@ -4,7 +4,7 @@ use crate::{difficulty, inout};
 use clearscreen::clear as clean;
 use std::cmp::Ordering;
 
-pub fn start_game() -> Result<(), std::io::Error> {
+pub fn start_game() -> Result<bool, std::io::Error> {
     let config = difficulty::select_difficulty()?;
     clean().expect("Failed to clear the screen");
 
@@ -34,11 +34,11 @@ pub fn start_game() -> Result<(), std::io::Error> {
             }
             Ordering::Greater => {
                 clean().expect("Faied to clear the screen");
-                inout::prompt("Too Big?\n")?;
+                inout::prompt("Too Big!\n")?;
             }
             Ordering::Equal => {
                 println!("You win!");
-                break;
+                return Ok(true);
             }
         }
 
@@ -46,8 +46,7 @@ pub fn start_game() -> Result<(), std::io::Error> {
 
         if tries == max_tries {
             prompt("You lost!")?;
-            break;
+            return Ok(false);
         }
     }
-    Ok(())
 }

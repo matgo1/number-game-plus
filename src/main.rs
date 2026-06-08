@@ -3,6 +3,7 @@ mod inout;
 mod logic;
 mod messages;
 mod random;
+mod stats;
 use messages::*;
 
 #[derive(Debug, PartialEq)]
@@ -22,7 +23,10 @@ fn parse_menu_choice(input: &str) -> Option<MenuChoice> {
 }
 
 fn main() -> Result<(), std::io::Error> {
+    clearscreen::clear().expect("Failed to clear screen");
     inout::prompt(WELCOME)?; // Welcome messages
+
+    let mut current_stats = stats::load_stats();
 
     // Loop for checking user input
     loop {
@@ -34,15 +38,21 @@ fn main() -> Result<(), std::io::Error> {
         // Analyze user input
         match parse_menu_choice(&user_mode_choice) {
             Some(MenuChoice::Play) => {
-                inout::prompt("Play selected")?;
                 clearscreen::clear().expect("Failed to clear the screen");
-                logic::start_game()?;
+                current_stats.played_games += 1;
+                if logic::start_game()? {
+                    current_stats.wins += 1;
+                } else {
+                    current_stats.losses += 1;
+                }
+                stats::save_stats(&current_stats);
             }
             Some(MenuChoice::Stats) => {
-                inout::prompt("Stats selected")?;
+                inout::prompt(format!("Current stats: {:?}", current_stats).as_str())?;
             }
             Some(MenuChoice::Quit) => {
                 inout::prompt("Quit selected")?;
+                stats::save_stats(&current_stats);
                 break;
             }
             None => inout::prompt("Please enter a valid option (1 - 3)")?,
